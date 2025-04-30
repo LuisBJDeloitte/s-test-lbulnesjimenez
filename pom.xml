@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
- 
-    <groupId>d36a1128-e322-46b8-b0ff-0e2971ea1aea</groupId>
-    <artifactId>s-layer-rjaencobos-impl</artifactId>
-    <version>1.0.0</version>
-    <packaging>mule-application</packaging>
- 
-    <name>s-layer-rjaencobos</name>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>10761b83-acdc-4c34-9569-51dd9bd044de</groupId>
+	<artifactId>s-test-lbulnesjimenez-imp</artifactId>
+	<version>1.0.0</version>
+	<packaging>mule-application</packaging>
+
+	<name>s-test-lbulnesjimenez</name>
  
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -70,7 +70,7 @@
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
-            <groupId>d36a1128-e322-46b8-b0ff-0e2971ea1aea</groupId>
+            <groupId>10761b83-acdc-4c34-9569-51dd9bd044de</groupId>
             <artifactId>s-layer-rjaencobos</artifactId>
             <version>1.0.0</version>
             <classifier>raml</classifier>
