@@ -42,4 +42,13 @@ jobs:
         run: mvn help:evaluate -Dexpression=mule.runtime.version -q -DforceStdout
  
       - name: Deploy to CloudHub
-        run: mvn clean deploy -X -DmuleDeploy -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }} -Danypoint.environment=Sandbox
+        env:
+          anypoint_username: ${{ secrets.anypoint_platform_username }}
+          anypoint_password: ${{ secrets.anypoint_platform_password }}
+        run: |
+          artifact=$(ls artifacts/*.jar | head -1)
+          # El flag -DmuleDeploy activa la sección <cloudhub2Deployment> en el POM :contentReference[oaicite:2]{index=2}
+          mvn -B deploy -DmuleDeploy \
+              -Danypoint.username="$anypoint_username" \
+              -Danypoint.password="$anypoint_password" \
+              --file pom.xml
