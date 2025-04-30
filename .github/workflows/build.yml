@@ -50,11 +50,12 @@ jobs:
 
       - name: Deploy to CloudHub
         env:
-          ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
-          ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+          anypoint_username: ${{ secrets.anypoint_platform_username }}
+          anypoint_password: ${{ secrets.anypoint_platform_password }}
         run: |
           artifact=$(ls artifacts/*.jar | head -1)
+          # El flag -DmuleDeploy activa la sección <cloudhub2Deployment> en el POM :contentReference[oaicite:2]{index=2}
           mvn -B deploy -DmuleDeploy \
-            -Danypoint.username="$ANYPOINT_USERNAME" \
-            -Danypoint.password="$ANYPOINT_PASSWORD" \
-            --file pom.xml
+              -Danypoint.username="$anypoint_username" \
+              -Danypoint.password="$anypoint_password" \
+              --file pom.xml
