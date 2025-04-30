@@ -47,7 +47,7 @@
                         <muleVersion>${app.runtime}</muleVersion>
                         <username>${{ secrets.ANYPOINT_PLATFORM_USERNAME }}</username>
                         <password>${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}</password>
-                        <applicationName>s-test-lbulnesjimenez</applicationName>
+                        <applicationName>s-test-lbulnesjimenez-imp</applicationName>
                         <replicas>1</replicas>
                         <vCores>0.1</vCores>
                     </cloudhub2Deployment>
