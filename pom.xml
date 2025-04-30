@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>10761b83-acdc-4c34-9569-51dd9bd044de</groupId>
-	<artifactId>s-test-lbulnesjimenez</artifactId>
+	<artifactId>s-test-lbulnesjimenez-impl</artifactId>
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
