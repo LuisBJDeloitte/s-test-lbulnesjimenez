@@ -3,8 +3,6 @@ name: Build and Deploy to Sandbox
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -12,43 +10,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 17
 
-      - name: Configure settings.xml
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<EOF
-          <settings>
-            <servers>
-              <server>
-                <id>anypoint-exchange-v3</id>
-                <username>${{ secrets.ANYPOINT_USERNAME }}</username>
-                <password>${{ secrets.ANYPOINT_PASSWORD }}</password>
-              </server>
-            </servers>
-          </settings>
-          EOF
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
-      - name: Build and stamp jar
+      - name: Stamp artifact with commit hash
         run: |
-          mvn -B package --file pom.xml
           jar=$(ls target/*.jar | head -1)
           hash=$(git rev-parse --short "$GITHUB_SHA")
-          mv "$jar" "$(dirname "$jar")/$(basename "$jar" .jar)-$hash.jar"
+          mv "$jar" "target/$(basename "$jar" .jar)-$hash.jar"
+
+      - name: List packaged jars for debug
+        run: ls -la target               # Verificar que existen los JAR :contentReference[oaicite:11]{index=11}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifacts
-          path: target/*-$hash.jar
+          path: target/*.jar             # Coincide con cualquiera de los JAR generados :contentReference[oaicite:12]{index=12}
 
   deploy:
     needs: build
@@ -56,27 +39,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }} 
-
-      - name: Download artifacts
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: artifacts
           path: artifacts
 
       - name: List downloaded jars for debug
-        run: ls -la artifacts      # valida que exista al menos un .jar :contentReference[oaicite:7]{index=7}
+        run: ls -la artifacts            # Confirmar la presencia del .jar :contentReference[oaicite:13]{index=13}
 
       - name: Deploy to CloudHub
         env:
-          anypoint_username: ${{ secrets.ANYPOINT_USERNAME }}
-          anypoint_password: ${{ secrets.ANYPOINT_PASSWORD }}
+          ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+          ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
         run: |
           artifact=$(ls artifacts/*.jar | head -1)
           mvn -B deploy -DmuleDeploy \
-              -Danypoint.username="$anypoint_username" \
-              -Danypoint.password="$anypoint_password" \
-              --file pom.xml
+            -Danypoint.username="$ANYPOINT_USERNAME" \
+            -Danypoint.password="$ANYPOINT_PASSWORD" \
+            --file pom.xml
