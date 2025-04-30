@@ -25,22 +25,32 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 17  # Mule 4.9 LTS requiere Java 17 
+          java-version: 17  # Mule 4.9.x requiere Java 17
 
-      - name: Configure Maven settings.xml for Anypoint Exchange
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<EOF
-          <settings>
-            <servers>
-              <server>
-                <id>anypoint-exchange-v3</id>
-                <username>${{ secrets.anypoint_platform_username }}</username>
-                <password>${{ secrets.anypoint_platform_password }}</password>
-              </server>
-            </servers>
-          </settings>
-          EOF
+      - name: Generate Maven settings.xml
+        uses: whelk-io/[email protected]
+        with:
+          # Credentials for Anypoint Exchange
+          servers: >
+            [{
+              "id": "anypoint-exchange-v3",
+              "username": "${{ secrets.anypoint_platform_username }}",
+              "password": "${{ secrets.anypoint_platform_password }}"
+            }]
+          # Additional repositories for Everit JSON Schema and Maven Central
+          repositories: >
+            [
+              {
+                "id": "mulesoft-public",
+                "name": "MuleSoft Public Repository",
+                "url": "https://repository.mulesoft.org/nexus/content/repositories/public/"
+              },
+              {
+                "id": "central",
+                "name": "Maven Central",
+                "url": "https://repo.maven.apache.org/maven2"
+              }
+            ]
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
@@ -81,7 +91,7 @@ jobs:
           anypoint_password: ${{ secrets.anypoint_platform_password }}
         run: |
           artifact=$(ls artifacts/*.jar | head -1)
-          # El flag -DmuleDeploy activa la sección <cloudhub2Deployment> en el POM :contentReference[oaicite:2]{index=2}
+          # -DmuleDeploy activa la sección <cloudhub2Deployment> en el POM
           mvn -B deploy -DmuleDeploy \
               -Danypoint.username="$anypoint_username" \
               -Danypoint.password="$anypoint_password" \
