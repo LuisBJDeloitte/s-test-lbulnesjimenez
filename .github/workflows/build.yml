@@ -41,5 +41,8 @@ jobs:
       - name: Print Mule runtime version
         run: mvn help:evaluate -Dexpression=mule.runtime.version -q -DforceStdout
  
-      - name: Deploy to CloudHub
-        run: mvn clean deploy -X -DmuleDeploy -Danypoint.username=${{ secrets.ANYPOINT_PLATFORM_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PLATFORM_PASSWORD }} -Danypoint.environment=Sandbox
+      #- name: Deploy to CloudHub
+      #  run: mvn clean deploy -X -DmuleDeploy -Danypoint.username=${{ secrets.ANYPOINT_PLATFORM_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PLATFORM_PASSWORD }} -Danypoint.environment=Sandbox
+
+      - name: Deploy with Conected App
+        run: mvn deploy --settings .maven/settings.xml -DmuleDeploy -Dclient.id=617898ad9942490e84621ab04216d018 -Dclient.secret=6727cd07a11f40399bc6D2aa0fEf857f
