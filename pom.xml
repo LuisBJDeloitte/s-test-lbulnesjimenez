@@ -14,14 +14,6 @@
 		<app.runtime>4.9.3:3e-java17</app.runtime>
 		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
 	</properties>
-	<distributionManagement>
-		<repository>
-			<id>anypoint-exchange</id>
-			<name>Anypoint Exchange Repository</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/d36a1128-e322-46b8-b0ff-0e2971ea1aea/maven</url>
-			<layout>default</layout>
-		</repository>
-	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -119,7 +111,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-		<distributionManagement>
+	<distributionManagement>
 		<repository>
 			<id>Repository</id>
 			<name>Corporate Repository</name>
