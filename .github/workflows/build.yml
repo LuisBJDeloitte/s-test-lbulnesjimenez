@@ -41,11 +41,6 @@ jobs:
       - name: Print Mule runtime version
         run: mvn help:evaluate -Dexpression=mule.runtime.version -q -DforceStdout
  
-      - name: Publish to Exchange
-        run: |
-          mvn deploy --settings .maven/settings.xml -DskipMunitTests \
-          -Dclient.id="${{secrets.CONNECTED_APP_CLIENT_ID }}" \
-          -Dclient.secret="${{secrets.CONNECTED_APP_CLIENT_SECRET}}"
       - name: Deploy to CloudHub 2.0
         run: |
           mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
