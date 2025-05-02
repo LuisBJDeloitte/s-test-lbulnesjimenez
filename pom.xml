@@ -28,29 +28,21 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<cloudhub2Deployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<provider>MC</provider>
-						<environment>Sandbox</environment>
-						<target>Cloudhub-US-East-2</target>
-						<muleVersion>${app.runtime}</muleVersion>
-						<connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
-						<connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
-						<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						<applicationName>s-test-lbulnesjimenez</applicationName>
-						<businessGroupId>10761b83-acdc-4c34-9569-51dd9bd044de</businessGroupId>
-						<replicas>1</replicas>
-						<vCores>0.05</vCores>
-						<!-- <deploymentSettings>
-						<http>
-						<inbound>
-						<publicUrl>${publicURL}</publicUrl>
-						<forwardSslSession>true</forwardSslSession>
-						<lastMileSecurity>true</lastMileSecurity>
-						</inbound>
-						</http>
-						</deploymentSettings> -->
-					</cloudhub2Deployment>					
+
+					<classifier>---- select project type ----</classifier>
+                    <cloudhub2Deployment>
+                        <uri>https://anypoint.mulesoft.com</uri>
+                        <provider>MC</provider>
+                        <environment>Sandbox</environment>
+                        <target>Cloudhub-US-East-2</target>
+                        <muleVersion>${app.runtime}</muleVersion>
+                        <connectedAppClientId>617898ad9942490e84621ab04216d018</connectedAppClientId>
+                        <connectedAppClientSecret>6727cd07a11f40399bc6D2aa0fEf857f</connectedAppClientSecret>
+                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                        <applicationName>s-test-lbulnesjimenez</applicationName>
+                        <replicas>1</replicas>
+                        <vCores>0.1</vCores>
+                    </cloudhub2Deployment>				
 				</configuration>
 			</plugin>
 		</plugins>

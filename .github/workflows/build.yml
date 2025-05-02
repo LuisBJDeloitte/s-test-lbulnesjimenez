@@ -6,79 +6,36 @@ on:
       - main
  
 jobs:
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout this repo
-        uses: actions/checkout@v4
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: maven-settings-xml-action 
-        uses: whelk-io/maven-settings-xml-action@v20
-        env:
-          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
-          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
-        with:
-          servers: '[{ "id": "anypoint-exchange-v3", "username": "~~~Client~~~", "password": "617898ad9942490e84621ab04216d018~?~6727cd07a11f40399bc6D2aa0fEf857f" }]'
-  
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -DskipMunitTests
-      - name: Stamp artifact file name with commit hash
-        run: |
-          artifactName1=$(ls target/*.jar | head -1)
-          commitHash=$(git rev-parse --short "$GITHUB_SHA")
-          artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-          mv $artifactName1 $artifactName2
-      - name: Upload artifact 
-        uses: actions/upload-artifact@v4
-        with:
-            name: artifacts
-            path: target/*.jar
-  
-  
   deploy:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:    
-      - name: Checkout this repo
-        uses: actions/checkout@v4
-      - name: Cache dependencies
-        uses: actions/cache@v4
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+ 
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - uses: actions/download-artifact@v4
-
-        with:
-          name: artifacts
-      - name: Deploy to Exchange
+          java-version: '17'
+          distribution: 'temurin'
+ 
+      - name: Set up Maven settings.xml
         run: |
-          cat /home/runner/.m2/settings.xml
-          artifactName=$(ls *.jar | head -1)
-          mvn deploy -DskipMunitTests \
-           -s /home/runner/.m2/settings.xml \
-           -Dmule.artifact=$artifactName \
-           -Danypoint.clientId="$USERNAME" \
-           -Danypoint.clientSecret="$PASSWORD" \
-      - name: Deploy to Sandbox
-        run: |
-          artifactName=$(ls *.jar | head -1)
-          mvn deploy -DskipMunitTests -DmuleDeploy \
-           -Dmule.artifact=$artifactName \
-           -Danypoint.clientId="$USERNAME" \
-           -Danypoint.clientSecret="$PASSWORD" \
-           -Ddecryption.key="Mulesoft"
+          mkdir -p ~/.m2
+          cat <<EOF > ~/.m2/settings.xml
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                        https://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <servers>
+              <server>
+                <id>anypoint-exchange-v3</id>
+                <username>~~~Client~~~</username>
+                <password>43b95ff2cdc14a4eba9aff1c0b80a659~?~78E45f012Eab43e6a1623fC06BBBD843</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+ 
+      - name: Deploy to CloudHub
+        run: mvn clean deploy -DmuleDeploy -Danypoint.environment=Sandbox
