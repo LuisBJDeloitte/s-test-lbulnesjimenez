@@ -41,7 +41,14 @@ jobs:
       - name: Print Mule runtime version
         run: mvn help:evaluate -Dexpression=mule.runtime.version -q -DforceStdout
  
-      - name: Deploy to CloudHub
-        run: mvn clean deploy -X -DmuleDeploy -Danypoint.username=${{ secrets.ANYPOINT_PLATFORM_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PLATFORM_PASSWORD }} -Danypoint.environment=Sandbox
-
+      - name: Publish to Exchange
+        run: |
+          mvn deploy --settings .maven/settings.xml -DskipMunitTests \
+          -Dclient.id="${{secrets.CONNECTED_APP_CLIENT_ID }}" \
+          -Dclient.secret="${{secrets.CONNECTED_APP_CLIENT_SECRET}}"
+      - name: Deploy to CloudHub 2.0
+        run: |
+          mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
+          -Dclient.id="${{secrets.CONNECTED_APP_CLIENT_ID }}" \
+          -Dclient.secret="${{secrets.CONNECTED_APP_CLIENT_SECRET}}" 
         

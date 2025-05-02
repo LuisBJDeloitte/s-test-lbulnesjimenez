@@ -41,11 +41,13 @@
 						<environment>Sandbox</environment>
 						<target>Cloudhub-US-East-2</target>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${{ secrets.ANYPOINT_PLATFORM_USERNAME }}</username>
-						<password>${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}</password>
+						<server>anypoint-exchange-v3</server>
 						<applicationName>s-test-lbulnesjimenez</applicationName>
 						<replicas>1</replicas>
 						<vCores>0.1</vCores>
+						<deploymentSettings>
+							<generateDefaultPulicURL>true</generateDefaultPulicURL>
+						</deploymentSettings>
 					</cloudhub2Deployment>
 					<classifier>---- select project type ----</classifier>
 				</configuration>
@@ -99,18 +101,13 @@
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>Repository</id>
-			<name>Corporate Repository</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/10761b83-acdc-4c34-9569-51dd9bd044de/maven</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
 			<id>mulesoft-releases</id>
 			<name>MuleSoft Releases Repository</name>
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
@@ -122,4 +119,12 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+		<distributionManagement>
+		<repository>
+			<id>Repository</id>
+			<name>Corporate Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/10761b83-acdc-4c34-9569-51dd9bd044de/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 </project>
