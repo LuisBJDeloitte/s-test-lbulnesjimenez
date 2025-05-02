@@ -21,6 +21,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.2.0</version>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
@@ -33,15 +34,23 @@
 						<environment>Sandbox</environment>
 						<target>Cloudhub-US-East-2</target>
 						<muleVersion>${app.runtime}</muleVersion>
-						<server>anypoint-exchange-v3</server>
+						<connectedAppClientId>${anypoint.clientId}</connectedAppClientId>
+						<connectedAppClientSecret>${anypoint.clientSecret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<applicationName>s-test-lbulnesjimenez</applicationName>
+						<businessGroupId>10761b83-acdc-4c34-9569-51dd9bd044de</businessGroupId>
 						<replicas>1</replicas>
-						<vCores>0.1</vCores>
-						<deploymentSettings>
-							<generateDefaultPulicURL>true</generateDefaultPulicURL>
-						</deploymentSettings>
-					</cloudhub2Deployment>
-					<classifier>---- select project type ----</classifier>
+						<vCores>0.05</vCores>
+						<!-- <deploymentSettings>
+						<http>
+						<inbound>
+						<publicUrl>${publicURL}</publicUrl>
+						<forwardSslSession>true</forwardSslSession>
+						<lastMileSecurity>true</lastMileSecurity>
+						</inbound>
+						</http>
+						</deploymentSettings> -->
+					</cloudhub2Deployment>					
 				</configuration>
 			</plugin>
 		</plugins>

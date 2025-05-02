@@ -9,7 +9,7 @@
     <server>
       <id>anypoint-exchange-v3</id>
       <username>~~~Client~~~</username>
-      <password>${client.id}~?~${client.secret}</password>
+      <password>617898ad9942490e84621ab04216d018~?~6727cd07a11f40399bc6D2aa0fEf857f</password>
     </server>
   </servers>
 
