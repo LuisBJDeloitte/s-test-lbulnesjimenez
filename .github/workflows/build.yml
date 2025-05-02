@@ -59,8 +59,8 @@ jobs:
       - name: maven-settings-xml-action 
         uses: whelk-io/maven-settings-xml-action@v20
         env:
-          USERNAME: ${{ secrets.anypoint_platform_clientid }}
-          PASSWORD: ${{ secrets.anypoint_platform_clientsecret }}
+          USERNAME: ${{ secrets.ANYPOINT_PLATFORM_USERNAME }}
+          PASSWORD: ${{ secrets.ANYPOINT_PLATFORM_PASSWORD }}
         with:
           servers: '[{ "id": "Repository", "username": "~~~Client~~~", "password": "617898ad9942490e84621ab04216d018~?~6727cd07a11f40399bc6D2aa0fEf857f" }]'
       - name: Deploy to Exchange
